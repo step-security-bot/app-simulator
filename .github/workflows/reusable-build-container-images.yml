@@ -19,8 +19,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-24.04
-    permissions:
-      packages: write
     strategy:
       matrix:
         image:
@@ -43,8 +41,8 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: cisco-service
+          password: ${{ secrets.PACKAGE_PUBLICATION_TOKEN }}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
         with:
