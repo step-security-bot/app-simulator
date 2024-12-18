@@ -1,0 +1,36 @@
+services:
+{%- if services is defined %}
+  ## services
+  {%- for name, details in services.items() %}
+  {{ name }}:
+    image: ghcr.io/cisco-open/app-simulator-services-{{ details.type }}:latest
+    ports:
+      - "{{ details.port }}:8080"
+    volumes:
+      - {{ name | replace("-", "_") }}_config:/config.json
+  {%- endfor %}
+{%- endif -%}
+{%- if databases is defined %}
+  ## databases
+  {%- for name, details in databases.items() %}
+  {{ name }}:
+    image: ghcr.io/cisco-open/app-simulator-databases-{{ details.type }}:latest
+    volumes:
+      - {{ name | replace("-", "_") }}_config:/config.json
+  {%- endfor %}
+{%- endif -%}
+{%- if loaders is defined %}
+  ## loaders
+  {%- for name, details in loaders.items() %}
+  {{ name }}:
+    image: ghcr.io/cisco-open/app-simulator-loaders-{{ details.type }}:latest
+    volumes:
+      - {{ name | replace("-", "_") }}_config:/config.json
+  {%- endfor %}
+{%- endif %}
+configs:
+{%- for name, details in services.items() %}
+  {{ name | replace("-", "_") }}_config:
+    content: |
+      {{ details | tojson }}
+{%- endfor -%}

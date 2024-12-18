@@ -1,0 +1,35 @@
+services:
+  ## services
+  frontend:
+    image: ghcr.io/cisco-open/app-simulator-services-java:latest
+    ports:
+      - "3000:8080"
+    volumes:
+      - frontend_config:/config.json
+  processing:
+    image: ghcr.io/cisco-open/app-simulator-services-java:latest
+    ports:
+      - ":8080"
+    volumes:
+      - processing_config:/config.json
+  virus-scanner:
+    image: ghcr.io/cisco-open/app-simulator-services-nodejs:latest
+    ports:
+      - "3001:8080"
+    volumes:
+      - virus_scanner_config:/config.json
+  ## loaders
+  browser:
+    image: ghcr.io/cisco-open/app-simulator-loaders-puppeteer:latest
+    volumes:
+      - browser_config:/config.json
+configs:
+  frontend_config:
+    content: |
+      {"agent": true, "endpoints": {"http": {"/upload": ["http://processing/magicByte", "http://processing/virus"]}}, "port": 3000, "type": "java"}
+  processing_config:
+    content: |
+      {"agent": true, "endpoints": {"http": {"/magicByte": ["cache,128", {"call": "data", "id": "magicByteCheck", "type": "string", "value": [true, false]}], "/virus": ["http://virus-scanner/scan", {"call": "data", "id": "virusFoundScore", "type": "int", "value": [0, 1, 5, 10]}]}}, "type": "java"}
+  virus_scanner_config:
+    content: |
+      {"agent": false, "endpoints": {"http": {"scan": ["sleep,1500", {"call": "error,500,Scan failed", "probability": 0.1}, "sleep,500"]}}, "port": 3001, "type": "nodejs"}

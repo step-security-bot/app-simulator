@@ -1,0 +1,49 @@
+services:
+  frontend:
+    type: java
+    agent: yes
+    port: 3000
+    endpoints:
+      http:
+        /upload:
+          - http://processing/magicByte
+          - http://processing/virus
+  processing:
+    type: java
+    agent: yes
+    endpoints:
+      http:
+        /magicByte:
+          - cache,128
+          - call: data
+            id: magicByteCheck
+            type: string
+            value: [yes,no]
+        /virus:
+          - http://virus-scanner/scan
+          - call: data
+            id: virusFoundScore
+            type: int
+            value: [0,1,5,10]
+  virus-scanner:
+    type: nodejs
+    agent: no
+    port: 3001
+    endpoints:
+      http:
+        scan:
+          - sleep,1500
+          - call: error,500,Scan failed
+            probability: 0.1
+          - sleep,500
+
+
+loaders:
+  browser:
+    type: puppeteer
+    wait: 15
+    count: 3
+    urls:
+      - http://frontend/upload
+      - http://frontend/upload
+      - http://frontend/upload
