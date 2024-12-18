@@ -4,13 +4,13 @@ LOADER_CONFIG="/config.json"
 
 # Check if the file exists
 if [[ ! -f "${LOADER_CONFIG}" ]]; then
-  echo "Error: $LOADER_CONFIG not found!"
-  exit 1
+  echo "Warning: $LOADER_CONFIG not found! Environment variables will be used instead."
+else
+  SLEEP=$(jq -r '.sleep' "$LOADER_CONFIG")
+  WAIT=$(jq -r '.wait' "$LOADER_CONFIG")
+  URLS=$(jq -r '.urls | join(" ")' "$LOADER_CONFIG")
 fi
 
-SLEEP=$(jq -r '.sleep' "$LOADER_CONFIG")
-WAIT=$(jq -r '.wait' "$LOADER_CONFIG")
-URLS=$(jq -r '.urls | join(" ")' "$LOADER_CONFIG")
 
 # Check if SLEEP and WAIT are numbers
 if ! [[ "${SLEEP}" =~ ^[0-9]+$ ]]; then
