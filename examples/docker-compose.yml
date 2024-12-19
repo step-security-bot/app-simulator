@@ -33,6 +33,7 @@ services:
           - ext-payment-2
   loader:
     image: ghcr.io/cisco-open/app-simulator-loaders-curl:latest
+    pull_policy: build
     build:
       context: ../src/loaders/curl
       dockerfile: Dockerfile
