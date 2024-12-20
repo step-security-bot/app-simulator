@@ -37,10 +37,6 @@ services:
     build:
       context: ../src/loaders/curl
       dockerfile: Dockerfile
-    environment:
-      - URLS=https://frontend:8080/addtocart http://frontend:8080/checkout
-      - SLEEP=5
-      - WAIT=1
   backend-db:
     image: ghcr.io/cisco-open/app-simulator-databases-mysql:latest
     environment:
