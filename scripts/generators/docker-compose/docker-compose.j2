@@ -1,29 +1,35 @@
+{%- set imageNamePrefix = global.imageNamePrefix | default('ghcr.io/cisco-open/') -%}
+{%- set imageNameSuffix = global.imageNameSuffix | default('latest') -%}
+{# Ensure the variable always ends with a slash #}
+{%- set imageNamePrefix = imageNamePrefix if imageNamePrefix.endswith('/') else imageNamePrefix + '/' -%}
 services:
-{%- if services is defined %}
+{%- if services is defined and services is mapping %}
   ## services
   {%- for name, details in services.items() %}
   {{ name }}:
-    image: ghcr.io/cisco-open/app-simulator-services-{{ details.type }}:latest
+    image: {{ imageNamePrefix }}app-simulator-services-{{ details.type }}:{{ imageNameSuffix }}
+    {%- if details.port is defined %}
     ports:
       - "{{ details.port }}:8080"
+    {%- endif %}
     volumes:
       - {{ name | replace("-", "_") }}_config:/config.json
   {%- endfor %}
 {%- endif -%}
-{%- if databases is defined %}
+{%- if databases is defined and databases is mapping %}
   ## databases
   {%- for name, details in databases.items() %}
   {{ name }}:
-    image: ghcr.io/cisco-open/app-simulator-databases-{{ details.type }}:latest
+    image: {{ imageNamePrefix }}app-simulator-databases-{{ details.type }}:{{ imageNameSuffix }}
     volumes:
       - {{ name | replace("-", "_") }}_config:/config.json
   {%- endfor %}
 {%- endif -%}
-{%- if loaders is defined %}
+{%- if loaders is defined and loaders is mapping %}
   ## loaders
   {%- for name, details in loaders.items() %}
   {{ name }}:
-    image: ghcr.io/cisco-open/app-simulator-loaders-{{ details.type }}:latest
+    image: {{ imageNamePrefix }}app-simulator-loaders-{{ details.type }}:{{ imageNameSuffix }}
     volumes:
       - {{ name | replace("-", "_") }}_config:/config.json
   {%- endfor %}
