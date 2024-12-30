@@ -1,6 +1,5 @@
 global:
-  imageNamePrefix: "svrnm"
-  imageNameSuffix: "0.2.0"
+  imageNameSuffix: edge
 
 services:
   service-a:
@@ -20,8 +19,7 @@ databases:
 loaders:
   default:
     type: curl
-    wait: 15
-    count: 5
+    wait: 0
     urls:
       - http://service-a/call/b
       - http://service-b/sleep

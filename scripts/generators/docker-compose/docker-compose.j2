@@ -1,5 +1,7 @@
+{%- set global = global | default({}) -%}
 {%- set imageNamePrefix = global.imageNamePrefix | default('ghcr.io/cisco-open/') -%}
 {%- set imageNameSuffix = global.imageNameSuffix | default('latest') -%}
+{%- set serviceDefaultPort = global.serviceDefaultPort | default(80) -%}
 {# Ensure the variable always ends with a slash #}
 {%- set imageNamePrefix = imageNamePrefix if imageNamePrefix.endswith('/') else imageNamePrefix + '/' -%}
 services:
@@ -12,8 +14,17 @@ services:
     ports:
       - "{{ details.port }}:8080"
     {%- endif %}
-    volumes:
-      - {{ name | replace("-", "_") }}_config:/config.json
+    {%- if serviceDefaultPort != 8080 %}
+    environment:
+      APP_SERVER_PORT: "{{ serviceDefaultPort }}"
+      {%- if serviceDefaultPort <= 1024 %}
+    cap_add:
+      - NET_BIND_SERVICE 
+      {%- endif %}
+    {%- endif %}
+    configs:
+      - source: service_{{ name | replace("-", "_") }}_config
+        target: /config.json
   {%- endfor %}
 {%- endif -%}
 {%- if databases is defined and databases is mapping %}
@@ -21,8 +32,9 @@ services:
   {%- for name, details in databases.items() %}
   {{ name }}:
     image: {{ imageNamePrefix }}app-simulator-databases-{{ details.type }}:{{ imageNameSuffix }}
-    volumes:
-      - {{ name | replace("-", "_") }}_config:/config.json
+    configs:
+      - source: database_{{ name | replace("-", "_") }}_config
+        target: /config.json
   {%- endfor %}
 {%- endif -%}
 {%- if loaders is defined and loaders is mapping %}
@@ -30,13 +42,30 @@ services:
   {%- for name, details in loaders.items() %}
   {{ name }}:
     image: {{ imageNamePrefix }}app-simulator-loaders-{{ details.type }}:{{ imageNameSuffix }}
-    volumes:
-      - {{ name | replace("-", "_") }}_config:/config.json
+    configs:
+      - source: loader_{{ name | replace("-", "_") }}_config
+        target: /config.json
   {%- endfor %}
 {%- endif %}
 configs:
+{%- if services is defined and services is mapping %}
 {%- for name, details in services.items() %}
-  {{ name | replace("-", "_") }}_config:
+  service_{{ name | replace("-", "_") }}_config:
     content: |
       {{ details | tojson }}
 {%- endfor -%}
+{%- endif %}
+{%- if databases is defined and databases is mapping %}
+{%- for name, details in databases.items() %}
+  database_{{ name | replace("-", "_") }}_config:
+    content: |
+      {{ details | tojson }}
+{%- endfor -%}
+{%- endif %}
+{%- if loaders is defined and loaders is mapping %}
+{%- for name, details in loaders.items() %}
+  loader_{{ name | replace("-", "_") }}_config:
+    content: |
+      {{ details | tojson }}
+{%- endfor -%}
+{%- endif %}
