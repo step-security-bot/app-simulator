@@ -34,8 +34,8 @@ def main():
     parser.add_argument(
         '--output',
         type=str,
-        default='docker-compose.yml',
-        help='Path to the output file (default: docker-compose.yml)'
+        default='docker-compose.yaml',
+        help='Path to the output file (default: docker-compose.yaml)'
     )
     args = parser.parse_args()
     config_path = args.config
@@ -46,6 +46,7 @@ def main():
     yaml_data = read_yaml(config_path)
     if isinstance(yaml_data, dict):
         env = Environment(loader=FileSystemLoader('.'))
+
         template = env.get_template(template_path)
 
         rendered_content = template.render(yaml_data)
