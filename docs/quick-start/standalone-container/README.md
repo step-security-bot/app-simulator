@@ -123,3 +123,30 @@ A span for a request that returned a `500 Server Error` looks like the following
 in jaeger:
 
 ![A screenshot of a span in jaeger showing the span data for the error](spans-in-jaeger.png)
+
+## curl loader as base image
+
+Like any other container image, you can use
+[cisco-open/app-simulator container images](https://github.com/orgs/cisco-open/packages?repo_name=app-simulator)
+as base images, e.g.:
+
+```Dockerfile
+FROM ghcr.io/cisco-open/app-simulator-loaders-curl:latest
+
+WAIT=0
+SLEEP=5
+URLS=https://github.com/cisco-open/app-simulator
+```
+
+Build the docker image:
+
+```shell
+docker build -t my-load-generator .
+```
+
+Run your custom load generator for
+<https://github.com/cisco-open/app-simulator>:
+
+```shell
+docker run --rm -t -i my-load-generator
+```

@@ -33,7 +33,9 @@ start!
 - [kubernetes quick start](./docs/quick-start/kubernetes.md)
 - [docker compose quick start](./docs/quick-start/docker-compose.md)
 
-> [!NOTE] You can use the
+> [!NOTE]
+>
+> You can use the
 > [container images](https://github.com/orgs/cisco-open/packages?repo_name=app-simulator)
 > published as part of this project without the generators for kubernetes and
 > docker compose. Both are convenience functions!
