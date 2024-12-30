@@ -2,16 +2,18 @@
 name: Check container builds
 on:
   pull_request_target:
-    branches: [main]
     paths:
       - "src/loaders/**"
       - "src/services/**"
       - "src/databases/**"
       - ".github/workflows/reusable-build-container-images.yml"
       - ".github/workflows/check.yml"
+
+# Declare default permissions as read-only
+permissions: read-all
+
 jobs:
   build:
     uses: ./.github/workflows/reusable-build-container-images.yml
     with:
       push: false
-      release_stream: dev

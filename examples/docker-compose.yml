@@ -1,3 +1,4 @@
+---
 services:
   frontend:
     image: ghcr.io/cisco-open/app-simulator-services-java:latest
@@ -33,21 +34,20 @@ services:
           - ext-payment-2
   loader:
     image: ghcr.io/cisco-open/app-simulator-loaders-curl:latest
+    pull_policy: build
     build:
       context: ../src/loaders/curl
       dockerfile: Dockerfile
+  backend-db:
+    image: ghcr.io/cisco-open/app-simulator-databases-mysql:latest
     environment:
-      - URLS=https://frontend:8080/addtocart http://frontend:8080/checkout
-      - SLEEP=5
-      - WAIT=1
-#  backend-db:
-#    image: ghcr.io/cisco-open/app-simulator-databases-mysql:latest
-#    build:
-#      context: ../src/databases/mysql
-#      dockerfile: Dockerfile
-#    ports:
-#      - "3306:3306"
-#    volumes:
-#     - ./backend-db.json:/config.json
+      - MYSQL_ROOT_PASSWORD=root
+    build:
+      context: ../src/databases/mysql
+      dockerfile: Dockerfile
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./database.json:/config.json
 networks:
   default:
