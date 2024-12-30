@@ -39,7 +39,7 @@ After you have tried out application simulator with the quick start, you can lea
 ## Configuration specification
 
 Application simulator is driven by configuration files that allow you to describe a microservice architecture and
-then run it with your preferred container orchestration. The configuration file follows a [specification](./docs/specification.md)
+then run it with your preferred container orchestration. The configuration file follows a [specification](./docs/specification/README.md).
 
 ## Contribute
 
