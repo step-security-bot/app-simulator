@@ -31,9 +31,9 @@ jobs:
             name: services-nodejs
           - context: ./src/databases/mysql
             name: databases-mysql
-          - context: ./scripts/docker-compose
+          - context: ./scripts/generators/docker-compose
             name: generators-docker-compose
-          - context: ./scripts/k8s
+          - context: ./scripts/generators/k8s
             name: generators-k8s
     steps:
       - name: Checkout
