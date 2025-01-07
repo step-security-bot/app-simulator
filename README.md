@@ -58,10 +58,8 @@ learn using it with the step by step tutorial:
 
 ## Configuration specification
 
-Application simulator is driven by configuration files that allow you to
-describe a microservice architecture and then run it with your preferred
-container orchestration. The configuration file follows a
-[specification](./docs/specification.md)
+Application simulator is driven by configuration files that allow you to describe a microservice architecture and
+then run it with your preferred container orchestration. The configuration file follows a [specification](./docs/specification/README.md).
 
 ## Contribute
 
