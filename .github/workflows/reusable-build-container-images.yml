@@ -31,6 +31,10 @@ jobs:
             name: services-nodejs
           - context: ./src/databases/mysql
             name: databases-mysql
+          - context: ./scripts/docker-compose
+            name: generators-docker-compose
+          - context: ./scripts/k8s
+            name: generators-k8s
     steps:
       - name: Checkout
         uses: actions/checkout@v4.2.2

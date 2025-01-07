@@ -73,3 +73,12 @@ for DIR in "${REPO_DIR}/src/loaders"/*; do
 		docker buildx build --platform "$PLATFORM" -t "$IMAGE_TAG" $PUSH "$DIR" $PUSH
 	fi
 done
+
+for DIR in "${REPO_DIR}/scripts/generators"/*; do
+	if [ -d "$DIR" ]; then
+		IMAGE_TAG="${REPO_PREFIX}/${IMAGE_PREFIX}-loaders-$(basename "$DIR"):$VERSION"
+		echo "Building $IMAGE_TAG..."
+		echo "Running 'docker buildx build --platform $PLATFORM -t $IMAGE_TAG $DIR $PUSH'"
+		docker buildx build --platform "$PLATFORM" -t "$IMAGE_TAG" $PUSH "$DIR" $PUSH
+	fi
+done
