@@ -1,9 +1,35 @@
 import argparse
+from deepmerge import always_merger
+import inflect
 from jinja2 import Environment, FileSystemLoader
 import os
 import yaml
+# Initialize inflect engine
+p = inflect.engine()
+
 
 debug_mode = False
+
+defaultValues = {
+    "imageNamePrefix": "ghcr.io/cisco-open/",
+    "imageNameSuffix": "latest",
+    "defaultPorts": {
+        "services": 80, # this is different from the "default default" on purpose. 
+        "databases": 5432,
+        "loaders": 6000 # not used
+    },
+    # Keep the default ports for each service type here
+    # We need them to verify in the docker compose generation if they have been
+    # changed by the user.
+    "_defaultDefaultPorts": {
+        "services": 8080,
+        "databases": 5432,
+        "loaders": 6000
+    }
+}
+
+def plural_to_singular(word):
+    return p.singular_noun(word) or word
 
 def read_yaml(file_path):
     with open(os.path.expanduser(file_path), 'r') as file:
@@ -11,8 +37,23 @@ def read_yaml(file_path):
         data = yaml.safe_load(file)
         return data
 
+def render_compose_file(template, data, defaultValues):
+    globalVars = data.get('global', {})
+
+    config = {
+            "global": always_merger.merge(defaultValues, globalVars),
+            "scopes": {
+                "services": data.get('services', {}),
+                "databases": data.get('databases', {}),
+                "loaders": data.get('loaders', {}),
+            }
+    }
+
+    return template.render(config)
+
 def main():
     global debug_mode
+    global defaultValues
     parser = argparse.ArgumentParser(description='Process some configuration file.')
     parser.add_argument(
         '--config', 
@@ -47,9 +88,11 @@ def main():
     if isinstance(yaml_data, dict):
         env = Environment(loader=FileSystemLoader('.'))
 
+        env.filters['singularize'] = plural_to_singular
+
         template = env.get_template(template_path)
 
-        rendered_content = template.render(yaml_data)
+        rendered_content = render_compose_file(template, data, defaultValues)
         
         with open(output_path, 'w') as output_file:
             output_file.write(rendered_content)
@@ -57,11 +100,13 @@ def main():
     else:
         raise Exception(f"Failed to read the configuration file {config_file}: The top-level structure is not a dictionary.")
 
-try:   
-    main()
-except Exception as e:
-    if not debug_mode:
-        print(e)
-    else:
-        raise e
-    exit(1)
+
+if __name__ == "__main__":
+    try:   
+        main()
+    except Exception as e:
+        if not debug_mode:
+            print(e)
+        else:
+            raise e
+        exit(1)
