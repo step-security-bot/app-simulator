@@ -7,12 +7,15 @@ RUN apk addgroup -S appgroup && adduser -S appuser -G appgroup
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY createComposeFile.py .
+COPY createManifests.py .
 
-COPY docker-compose.j2 .
+COPY templates ./templates
+COPY deployments ./deployments
 
-RUN chown -R appuser:appgroup /app && chmod +x createComposeFile.py
+RUN chown -R appuser:appgroup /app && chmod +x createManifests.py
 USER appuser
 
+VOLUME [ "/app/deployments" ]
+
 # Define the default entrypoint to run the script
-ENTRYPOINT ["python", "createComposeFile.py", "--template", "/app/docker-compose.j2"]
+ENTRYPOINT ["python", "createManifests.py"]
