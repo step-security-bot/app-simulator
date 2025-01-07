@@ -8,8 +8,7 @@ LABEL org.opencontainers.image.licenses=BSD-3-Clause
 # until a better solution is found.
 # hadolint ignore=DL3018
 RUN apk add --no-cache bash curl util-linux jq
-
-WORKDIR /usr/bin/
-COPY entrypoint.sh /usr/bin
-RUN chmod +x /usr/bin/entrypoint.sh
+WORKDIR /usr/bin
+COPY entrypoint.sh /usr/bin/entrypoint.sh
+RUN chmod +x /usr/bin//entrypoint.sh
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
