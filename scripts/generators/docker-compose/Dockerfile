@@ -15,4 +15,4 @@ RUN chown -R appuser:appgroup /app && chmod +x createComposeFile.py
 USER appuser
 
 # Define the default entrypoint to run the script
-ENTRYPOINT ["python", "createComposeFile.py", "--template", "/app/docker-compose.j2"]
+ENTRYPOINT ["python", "createComposeFile.py", "--template", "docker-compose.j2"]
