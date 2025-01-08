@@ -3,7 +3,7 @@ services:
   ## {{ scope }}
   {%- for name, details in scopeDetails.items() %}
   {{ name }}:
-    image: {{ global.imageNamePrefix }}app-simulator-{{ scope }}-{{ details.type }}:{{global.imageNameSuffix }}
+    image: {{ global.imageNamePrefix }}app-simulator-{{ scope }}-{{ details.type }}:{{global.imageVersion }}
     {%- if details.port is defined %}
     ports:
       - "{{ details.port }}:{{ global.defaultPorts[scope] }}"

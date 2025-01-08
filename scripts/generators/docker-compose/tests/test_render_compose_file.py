@@ -24,7 +24,7 @@ def test_render_compose_file_with_simple_config_and_no_defaults(load_template):
     result = render_compose_file(load_template, {
         "global": {
             "imageNamePrefix": "test/",
-            "imageNameSuffix": "test"
+            "imageVersion": "test"
         },
         "services": {
             "test": {
@@ -94,7 +94,7 @@ def test_render_compose_file_with_simple_config_and_defaults(load_template):
         }
     }, {
       "imageNamePrefix": "test/",
-      "imageNameSuffix": "test"
+      "imageVersion": "test"
     })
     expected = """
 services:
@@ -133,7 +133,7 @@ def test_render_compose_file_with_port_config(load_template):
     result = render_compose_file(load_template, {
         "global": {
             "imageNamePrefix": "test/",
-            "imageNameSuffix": "test",
+            "imageVersion": "test",
             "defaultPorts": {
                 "services": 1024,
                 "databases": 5432,
