@@ -12,7 +12,7 @@ debug_mode = False
 
 defaultValues = {
     "imageNamePrefix": "ghcr.io/cisco-open/",
-    "imageNameSuffix": "latest",
+    "imageVersion": "latest",
     "defaultPorts": {
         "services": 80, # this is different from the "default default" on purpose. 
         "databases": 5432,
