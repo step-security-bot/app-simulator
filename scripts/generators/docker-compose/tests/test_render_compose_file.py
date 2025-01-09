@@ -1,12 +1,13 @@
+import pytest
 from createComposeFile import plural_to_singular, render_compose_file
 from jinja2 import Environment, FileSystemLoader
-import pytest
+
 
 @pytest.fixture(scope="session")
 def load_template():
-    env = Environment(loader=FileSystemLoader('.'))
-    env.filters['singularize'] = plural_to_singular
-    return env.get_template('docker-compose.j2')
+    env = Environment(loader=FileSystemLoader("."))
+    env.filters["singularize"] = plural_to_singular
+    return env.get_template("docker-compose.j2")
 
 
 def test_render_compose_file_with_empty_config_and_defaults(load_template):
@@ -20,28 +21,18 @@ configs:
 """.strip()
     assert result == expected
 
+
 def test_render_compose_file_with_simple_config_and_no_defaults(load_template):
-    result = render_compose_file(load_template, {
-        "global": {
-            "imageNamePrefix": "test/",
-            "imageVersion": "test"
+    result = render_compose_file(
+        load_template,
+        {
+            "global": {"imageNamePrefix": "test/", "imageVersion": "test"},
+            "services": {"test": {"type": "java"}},
+            "databases": {"testdb": {"type": "mysql"}},
+            "loaders": {"testloader": {"type": "curl"}},
         },
-        "services": {
-            "test": {
-                "type": "java"
-            }
-        },
-        "databases": {
-            "testdb": {
-                "type": "mysql"
-            }
-        },
-        "loaders": {
-            "testloader": {
-                "type": "curl"
-            }
-        }
-    }, {})
+        {},
+    )
     expected = """
 services:
   ## services
@@ -74,28 +65,18 @@ configs:
       {"type": "curl"}
 """.strip()
     assert result == expected
+
 
 def test_render_compose_file_with_simple_config_and_defaults(load_template):
-    result = render_compose_file(load_template, {
-        "services": {
-            "test": {
-                "type": "java"
-            }
+    result = render_compose_file(
+        load_template,
+        {
+            "services": {"test": {"type": "java"}},
+            "databases": {"testdb": {"type": "mysql"}},
+            "loaders": {"testloader": {"type": "curl"}},
         },
-        "databases": {
-            "testdb": {
-                "type": "mysql"
-            }
-        },
-        "loaders": {
-            "testloader": {
-                "type": "curl"
-            }
-        }
-    }, {
-      "imageNamePrefix": "test/",
-      "imageVersion": "test"
-    })
+        {"imageNamePrefix": "test/", "imageVersion": "test"},
+    )
     expected = """
 services:
   ## services
@@ -129,38 +110,27 @@ configs:
 """.strip()
     assert result == expected
 
+
 def test_render_compose_file_with_port_config(load_template):
-    result = render_compose_file(load_template, {
-        "global": {
-            "imageNamePrefix": "test/",
-            "imageVersion": "test",
-            "defaultPorts": {
-                "services": 1024,
-                "databases": 5432,
-                "loaders": 1025
+    result = render_compose_file(
+        load_template,
+        {
+            "global": {
+                "imageNamePrefix": "test/",
+                "imageVersion": "test",
+                "defaultPorts": {"services": 1024, "databases": 5432, "loaders": 1025},
+                "_defaultDefaultPorts": {
+                    "services": 8080,
+                    "databases": 5432,
+                    "loaders": 6000,
+                },
             },
-            "_defaultDefaultPorts": {
-                "services": 8080,
-                "databases": 5432,
-                "loaders": 6000
-            }
+            "services": {"test": {"type": "java"}},
+            "databases": {"testdb": {"type": "mysql"}},
+            "loaders": {"testloader": {"type": "curl"}},
         },
-        "services": {
-            "test": {
-                "type": "java"
-            }
-        },
-        "databases": {
-            "testdb": {
-                "type": "mysql"
-            }
-        },
-        "loaders": {
-            "testloader": {
-                "type": "curl"
-            }
-        }
-    }, {})
+        {},
+    )
     expected = """
 services:
   ## services

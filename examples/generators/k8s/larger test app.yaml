@@ -1,3 +1,4 @@
+---
 services:
   service-a:
     type: java
@@ -9,7 +10,7 @@ services:
           - http://service-b/b
         /c:
           - http://service-b/c
-        /d: 
+        /d:
           - slow,1024
           - call: error,500,Oops
             probability: 0.5

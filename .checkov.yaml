@@ -1,3 +1,4 @@
+---
 skip-path:
   - "/src/databases/mysql/Dockerfile"
   - "/src/services/java/Dockerfile"

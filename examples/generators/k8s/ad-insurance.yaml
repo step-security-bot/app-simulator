@@ -1,14 +1,7 @@
-#Simulated insurance application, will register the BTs listed under the Web-frontend tier. 
-#Note - some additional BTs will register during the first few runs, you should view # of calls and exclude accordingly.
-#Performance Issue 1 - 500 Error on /homepage BT will happen 10% of the time
-#Performance Issue 2 - Bad SQL Call & Slow execution on /processpolicy and /history BTs on 13% of calls
-#Performance Issue 3 - Slow web service call for selectquote on 37% of calls
-#TIP - You can run two versions of the script, upping the load and issues for one
-
+---
 services:
   web-frontend:
     type: java
-    agent: yes
     endpoints:
       http:
         /login:
@@ -30,7 +23,6 @@ services:
           - http://accountservices/policies/process
   accountservices:
     type: java
-    agent: yes
     endpoints:
       http:
         /account/login:
@@ -55,16 +47,14 @@ services:
           - http://policymgt/processpolicy
   claimservices:
     type: java
-    agent: yes
     endpoints:
       http:
         /startclaim:
-         - slow,725
+          - slow,725
         /submitclaim:
-         - slow,623
+          - slow,623
   policymgt:
     type: java
-    agent: yes
     port: 3007
     endpoints:
       http:
@@ -86,7 +76,6 @@ services:
         quotes: [id, customer, premium]
   quotesengine:
     type: java
-    agent: yes
     port: 3008
     endpoints:
       http:
@@ -96,7 +85,6 @@ services:
           - http://aggregator/aggregate
   aggregator:
     type: java
-    agent: yes
     endpoints:
       http:
         /aggregate:
@@ -105,7 +93,6 @@ services:
           - http://selectquote/quote
   selectquote:
     type: nodejs
-    agent: no
     endpoints:
       http:
         quote:
@@ -114,19 +101,17 @@ services:
             probability: 0.37
   policygenius:
     type: nodejs
-    agent: no
     endpoints:
       http:
         quote:
           - call: sleep, 75
   carinsurance:
     type: nodejs
-    agent: no
     endpoints:
       http:
         quote:
           - call: sleep, 53
-     
+
 loaders:
   browser:
     type: curl
