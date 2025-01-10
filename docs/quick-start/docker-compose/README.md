@@ -95,11 +95,11 @@ generator. You can use it wherever you want and you can modify it to your needs.
 
 If you want to quickly visualize the simulation, you can add OpenTelemetry using
 the [Java agent](https://opentelemetry.io/docs/zero-code/java/agent/) and
-Node.JS
+Node.js
 [`@opentelemetry/auto-instrumentations-node`](https://opentelemetry.io/docs/zero-code/js/)
 and send trace data to [jaeger](https://www.jaegertracing.io/).
 
-To do so, download the Java agent and Node.JS package:
+To do so, download the Java agent and Node.js package:
 
 ```shell
 curl -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar
@@ -148,7 +148,7 @@ services:
 
 The existing `docker-compose.yaml` and the newly created
 `docker-compose.override.yaml` will be merged, such that the OpenTelemetry Java
-agent and Node.JS package are injected into the services. Once again start the
+agent and Node.js package are injected into the services. Once again start the
 simulation:
 
 ```shell

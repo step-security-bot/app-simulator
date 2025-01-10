@@ -86,7 +86,10 @@ curl -v localhost:8080/my/endpoint
 The Java agent will print telemetry to the console, e.g.:
 
 ```shell
-[otel.javaagent 2024-12-30 14:31:24:972 +0000] [qtp1467981309-27] INFO io.opentelemetry.exporter.logging.LoggingSpanExporter - 'GET' : bbf7fc4f97e47a2bdef475f928099d62 31baa1f78b9c2701 SERVER [tracer: io.opentelemetry.jetty-11.0:2.11.0-alpha] AttributesMap{data={url.scheme=http, thread.name=qtp1467981309-27, network.protocol.version=1.1, network.peer.port=61224, user_agent.original=curl/8.7.1, http.request.method=GET, server.port=8080, url.path=/my/endpoint, thread.id=27, error.type=500, server.address=localhost, client.address=172.17.0.1, http.response.status_code=500, network.peer.address=172.17.0.1}, capacity=128, totalAddedValues=14}
+[otel.javaagent 2024-12-30 14:31:24:972 +0000] [qtp1467981309-27] INFO io.opentelemetry.exporter.logging.LoggingSpanExporter - 'GET' : bbf7fc4f97e47a2bdef475f928099d62 31baa1f78b9c2701 SERVER
+[tracer: io.opentelemetry.jetty-11.0:2.11.0-alpha] AttributesMap{data={url.scheme=http, thread.name=qtp1467981309-27, network.protocol.version=1.1, network.peer.port=61224, user_agent.original=curl/8.7.1,
+http.request.method=GET, server.port=8080, url.path=/my/endpoint, thread.id=27, error.type=500, server.address=localhost, client.address=172.17.0.1, http.response.status_code=500,
+network.peer.address=172.17.0.1}, capacity=128, totalAddedValues=14}
 ```
 
 As a final step, start

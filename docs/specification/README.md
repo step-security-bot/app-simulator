@@ -36,25 +36,25 @@ The top level element of an app sim config file MUST be
 [mapping](https://yaml.org/spec/1.2.2/#mapping) and MAY contain sections
 represented by the following keys:
 
-- **global**: the value node MUST either be empty, or a mapping that contains
+- `global**`: the value node MUST either be empty, or a mapping that contains
   configurations that are either relevant for the generation process or applied
   to all **containers**.
-- **services**: the value node MUST either be empty, or a mapping of
+- `services`: the value node MUST either be empty, or a mapping of
   **services** by their name.
-- **databases**: the value node MUST either be empty, or a mapping of
+- `databases`: the value node MUST either be empty, or a mapping of
   **databases** be their name.
-- **loaders**: the value node MUST either be empty, or a mapping of **loaders**
+- `loaders`: the value node MUST either be empty, or a mapping of **loaders**
   by their name.
 
 The structure of the mappings for the different **container** components
 (**services**, **databases**, **loaders**) are described below in the chatper
 [Container configuration](#container-configuration).
 
-The **global** configuration MAY have the following child nodes:
+The `global` configuration MAY have the following child nodes:
 
-- **imageNamePrefix**:
-- **imageNameSuffix**:
-- **serviceDefaultPort**:
+- `imageNamePrefix`:
+- `imageVersion`:
+- `serviceDefaultPort`:
 
 ## Container configuration
 
@@ -62,36 +62,36 @@ The **global** configuration MAY have the following child nodes:
 
 All **container** configurations share the following settings:
 
-- **type** (required)
-- **name**
-- **exposedPort**
-- **aliases**
-- **enabled**
+- `type` (required)
+- `name`
+- `exposedPort`
+- `aliases`
+- `enabled`
 
 ### Service configuration
 
-- **endpoints**
+- `endpoints`
 
 ### Call sequence configuration
 
-- **call**
-- **probability**
-- **schedule**
+- `call`
+- `probability`
+- `schedule`
 
-Available **commands** for **call**:
+Available **commands** for `call`:
 
-- **sleep**
-- **slow**
-- **cache**
-- **error**
-- **log**
+- `sleep`
+- `slow`
+- `cache`
+- `error`
+- `log`
 
 ### Database configuration
 
-- **databases**
+- `databases`
 
 ### Loader configuration
 
-- **wait**
-- **sleep**
-- **urls**
+- `wait`
+- `sleep`
+- `urls`

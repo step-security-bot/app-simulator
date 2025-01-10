@@ -1,3 +1,4 @@
+#checkov:skip=CKV_DOCKER_2:This is a run once container
 FROM python:3.13-alpine
 
 WORKDIR /app
