@@ -10,3 +10,53 @@ updates:
           - "github/*"
     schedule:
       interval: "weekly"
+
+  - package-ecosystem: docker
+    directory: /scripts/generators/docker-compose
+    schedule:
+      interval: daily
+
+  - package-ecosystem: pip
+    directory: /scripts/generators/docker-compose
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /scripts/generators/k8s
+    schedule:
+      interval: daily
+
+  - package-ecosystem: pip
+    directory: /scripts/generators/k8s
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /src/databases/mysql
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /src/loaders/curl
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /src/services/java
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /src/services/nodejs
+    schedule:
+      interval: daily
+
+  - package-ecosystem: npm
+    directory: /src/services/nodejs
+    schedule:
+      interval: daily
+
+  - package-ecosystem: maven
+    directory: /src/services/java
+    schedule:
+      interval: daily
