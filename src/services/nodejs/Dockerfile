@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:18@sha256:7f31a1eb14c61719b8bb0eaa029310cc33851f71d3578cc422b390f8096977c5
 
 LABEL org.opencontainers.image.source=https://github.com/cisco-open/app-simulator
 LABEL org.opencontainers.image.description="nodejs service for app-simulator"
